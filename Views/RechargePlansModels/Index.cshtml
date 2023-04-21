@@ -1,0 +1,120 @@
+﻿@model IEnumerable<MobileRecharge.Models.RechargePlansModel>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+
+@if (ViewData["Role"] != null && ViewData["Role"].Equals("Admin"))
+{
+    <p>
+        <a asp-action="Create">Add a plan</a>
+    </p>
+}
+<div class="row">
+    @foreach (var item in Model)
+    {
+        <div class="col-md-4 mb-3">
+            <div class="card">
+                <div class="card-header fw-bold text-primary">
+                    @Html.DisplayFor(modelItem => item.ProviderName)
+                </div>
+                <div class="card-body">
+                    <h5 class="card-title">Rs.@Html.DisplayFor(modelItem => item.Price)</h5>
+                    <p class="card-text">
+                        <strong>Calls:</strong> @Html.DisplayFor(modelItem => item.Calls) <br />
+                        <strong>Data:</strong> @Html.DisplayFor(modelItem => item.Data) <br />
+                        <strong>Validity:</strong> @Html.DisplayFor(modelItem => item.Validity) <br />
+                        <strong>SMS:</strong> @Html.DisplayFor(modelItem => item.SMS) <br />
+                    </p>
+                    @if (ViewData["Role"] != null && ViewData["Role"].Equals("Admin"))
+                    {
+                        <div class="btn-group" role="group">
+                            <a class="btn btn-primary me-2" asp-action="Edit" asp-route-id="@item.PlanId">Edit</a>
+
+                            <a class="btn btn-danger" asp-action="Delete" asp-route-id="@item.PlanId">Delete</a>
+                        </div>
+                    }
+                    else
+                    {
+                        <a class="btn btn-secondary" asp-action="Details" asp-route-id="@item.PlanId">Details</a>
+                    }
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+
+@*@if (ViewData["Role"] != null && ViewData["Role"].Equals("Admin"))
+{
+    <p>
+        <a asp-action="Create">Create New</a>
+    </p>
+}
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.ProviderName)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Calls)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Data)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Validity)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.SMS)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Price)
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ProviderName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Calls)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Data)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Validity)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.SMS)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Price)
+                    </td>
+                @if(ViewData["Role"] != null && ViewData["Role"].Equals("Admin"))
+                   
+                {
+                    <td>
+                        <a asp-action="Edit" asp-route-id="@item.PlanId">Edit</a> 
+                        <a asp-action="Details" asp-route-id="@item.PlanId">Details</a> 
+                        <a asp-action="Delete" asp-route-id="@item.PlanId">Delete</a>
+                    </td>
+                }
+                else
+                {
+                    <td>
+                        <a asp-action="Details" asp-route-id="@item.PlanId">Details</a>
+                    </td>
+                }
+                </tr>
+            }
+        </tbody>
+    </table>*@
+

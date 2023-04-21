@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.AspNetCore.Identity;
+using System.ComponentModel.DataAnnotations;
 
 namespace MobileRecharge.Models
 {
@@ -8,10 +9,9 @@ namespace MobileRecharge.Models
         [Required]
         public int ContactId { get; set; }
         public string Message { get; set; }
-        public RechargeUserModel User { get; set; }
+        public IdentityUser User { get; set; }
 
         public DateTime DateOfMessage { get; set; }
-
 
         public string Reply { get; set; }
     }

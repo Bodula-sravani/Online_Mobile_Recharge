@@ -4,7 +4,11 @@
 
 <ul class="navbar-nav">
 @if (SignInManager.IsSignedIn(User))
+
 {
+    <li class="nav-item">
+        <a class="nav-link text-dark" asp-area="" asp-controller="RechargePlansModels" asp-action="Index">Recharge plans</a>
+    </li>
     <li class="nav-item">
         <a  class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Hello @User.Identity?.Name!</a>
     </li>
@@ -13,6 +17,7 @@
             <button  type="submit" class="nav-link btn btn-link text-dark">Logout</button>
         </form>
     </li>
+    
 }
 else
 {
