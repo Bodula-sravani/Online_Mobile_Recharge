@@ -8,21 +8,18 @@ namespace MobileRecharge.Models
     {
         [Required]
         [Key]
-        public int RechargeReportId { get; set; }
+        public int ReportId { get; set; }
 
-        [Required]
-        public int ReportPlanId { get; set; }
+
+
+        [ForeignKey("PlanId")]
         public RechargePlansModel Plan { get; set; }
 
-        [Required]
-        public int ReportUserId { get; set; }
 
-        [ForeignKey("ReportUserId")]
-        public virtual AspNetUsers user { get; set; }
-
+        public RechargeUserModel User { get; set; }
 
         [Required]
-        public string PhoneNumber { get; set; }
+        public DateTime DateOfRecharge { get; set; }
 
 
 

@@ -1,15 +1,18 @@
-﻿namespace MobileRecharge.Models
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace MobileRecharge.Models
 {
     public class ContactModel
     {
-        [Required]
         [Key]
-        public int ContactId { get; set; }
-
         [Required]
-
+        public int ContactId { get; set; }
         public string Message { get; set; }
+        public RechargeUserModel User { get; set; }
 
-        []
+        public DateTime DateOfMessage { get; set; }
+
+
+        public string Reply { get; set; }
     }
 }
