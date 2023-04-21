@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
@@ -30,6 +31,18 @@ namespace MobileRecharge.Controllers
             var userId = userManager.GetUserId(this.User);
             Console.WriteLine("userid: " + userId);
             var user = await userManager.FindByIdAsync(userId);
+            var roles = await userManager.GetRolesAsync(user);
+
+            foreach (var role in roles)
+            {
+                if (role.Equals("Admin"))
+                {
+                    ViewData["Role"] = role;
+                    return _context.ContactDetails != null ?
+                          View(await _context.ContactDetails.ToListAsync()) :
+                          Problem("Entity set 'ApplicationDbContext.ContactDetails'  is null.");
+                }
+            }
             return _context.ContactDetails != null ? 
                           View(await _context.ContactDetails.Where(c => c.User.Equals(user)).ToListAsync()) :
                           Problem("Entity set 'ApplicationDbContext.ContactDetails'  is null.");
@@ -53,22 +66,10 @@ namespace MobileRecharge.Controllers
             return View(contactModel);
         }
 
+        
         // GET: ContactModels/Create
         public IActionResult Create()
         {
-            //var userId = userManager.GetUserId(this.User);
-
-            //var user = await userManager.FindByIdAsync(userId);
-
-            //var roles = await userManager.GetRolesAsync(user);
-
-            //foreach (var role in roles)
-            //{
-            //    if (role.Equals("Admin"))
-            //    {
-            //        ViewData["Role"] = role;
-            //    }
-            //}
 
             return View();
         }
@@ -114,6 +115,17 @@ namespace MobileRecharge.Controllers
             {
                 return NotFound();
             }
+            var userId = userManager.GetUserId(this.User);
+            Console.WriteLine("userid: " + userId);
+            var user = await userManager.FindByIdAsync(userId);
+            var roles = await userManager.GetRolesAsync(user);
+            foreach (var role in roles)
+            {
+                if (role.Equals("Admin"))
+                {
+                    ViewData["Role"] = role;
+                }
+            }
             return View(contactModel);
         }
 
@@ -122,34 +134,34 @@ namespace MobileRecharge.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("ContactId,Message,DateOfMessage,Reply")] ContactModel contactModel)
+        public async Task<IActionResult> Edit(int id,string userRole,[Bind("ContactId,Message,DateOfMessage,Reply")] ContactModel contactModel)
         {
+            Console.WriteLine("user role: " + userRole);
             if (id != contactModel.ContactId)
             {
                 return NotFound();
             }
-
-            if (ModelState.IsValid)
+            try
             {
-                try
-                {
-                    _context.Update(contactModel);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!ContactModelExists(contactModel.ContactId))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
+               
+                contactModel.DateOfMessage = DateTime.Now;
+                if (userRole == null) contactModel.Reply = "";
+                _context.Update(contactModel);
+                await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(contactModel);
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!ContactModelExists(contactModel.ContactId))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
+           return View(contactModel);
         }
 
         // GET: ContactModels/Delete/5

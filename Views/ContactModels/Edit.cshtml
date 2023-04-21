@@ -13,22 +13,32 @@
         <form asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="ContactId" />
+            @if (ViewData["Role"] != null && ViewData["Role"].Equals("Admin"))
+            {
+                <div class="form-group">
+                    <label asp-for="Message" class="control-label"></label>
+                    <input asp-for="Message" class="form-control" readonly />
+                    <span asp-validation-for="Message" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Reply" class="control-label"></label>
+                    <input asp-for="Reply" class="form-control" />
+                    <span asp-validation-for="Reply" class="text-danger"></span>
+                </div>
+            }
+            else
+            {
+                <div class="form-group">
+                    <label asp-for="Message" class="control-label"></label>
+                    <input asp-for="Message" class="form-control" />
+                    <span asp-validation-for="Message" class="text-danger"></span>
+                </div>
+            }
             <div class="form-group">
-                <label asp-for="Message" class="control-label"></label>
-                <input asp-for="Message" class="form-control" />
-                <span asp-validation-for="Message" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="DateOfMessage" class="control-label"></label>
-                <input asp-for="DateOfMessage" class="form-control" />
-                <span asp-validation-for="DateOfMessage" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Reply" class="control-label"></label>
-                <input asp-for="Reply" class="form-control" />
-                <span asp-validation-for="Reply" class="text-danger"></span>
-            </div>
-            <div class="form-group">
+                @if(ViewData["Role"] != null && ViewData["Role"].Equals("Admin"))
+                {
+                    <input name="userRole" value="@ViewData["Role"]" hidden />
+                }
                 <input type="submit" value="Save" class="btn btn-primary" />
             </div>
         </form>

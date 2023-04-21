@@ -33,13 +33,27 @@
             <td>
                 @Html.DisplayFor(modelItem => item.DateOfMessage)
             </td>
+                @if (string.IsNullOrEmpty(item.Reply))
+                {
+                    <td>...Waiting for reply...</td>
+                }
+                else
+                {
+                    <td>@Html.DisplayFor(modelItem => item.Reply)</td>
+                }
             <td>
-                @Html.DisplayFor(modelItem => item.Reply)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.ContactId">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.ContactId">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.ContactId">Delete</a>
+                <a asp-action="Edit" asp-route-id="@item.ContactId">Edit</a>
+                @if(ViewData["Role"] != null && ViewData["Role"].Equals("Admin"))
+                {
+                       
+                }
+                else
+                {
+                    <a asp-action="Delete" asp-route-id="@item.ContactId">Delete</a>
+                        
+                }
+               
+               
             </td>
         </tr>
 }
