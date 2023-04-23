@@ -4,58 +4,61 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Index</h1>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Message)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.DateOfMessage)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Reply)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Message)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.DateOfMessage)
-            </td>
-                @if (string.IsNullOrEmpty(item.Reply))
-                {
-                    <td>...Waiting for reply...</td>
-                }
-                else
-                {
-                    <td>@Html.DisplayFor(modelItem => item.Reply)</td>
-                }
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.ContactId">Edit</a>
-                @if(ViewData["Role"] != null && ViewData["Role"].Equals("Admin"))
-                {
-                       
-                }
-                else
-                {
-                    <a asp-action="Delete" asp-route-id="@item.ContactId">Delete</a>
-                        
-                }
-               
-               
-            </td>
-        </tr>
+@if(ViewData["Role"] == null)
+{
+    <p>
+        <a asp-action="Create">Raise a query</a>
+    </p>
 }
-    </tbody>
-</table>
+@if (Model.Any())
+{
+    @if (Model.Any())
+    {
+        <div class="row">
+            @foreach (var item in Model)
+            {
+                <div class="col-md-6 mb-4">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">@Html.DisplayFor(modelItem => item.Message)</h5>
+                            <p class="card-text">Date of Message: @Html.DisplayFor(modelItem => item.DateOfMessage)</p>
+                            @if (!string.IsNullOrEmpty(item.Reply))
+                            {
+                                <p class="card-text">Reply: @Html.DisplayFor(modelItem => item.Reply)</p>
+                            }
+                            else
+                            {
+                                if (!(ViewData["Role"] != null && ViewData["Role"].Equals("Admin")))
+                                {
+                                    <p class="card-text">...Waiting for reply...</p>
+                                }
+                                
+                            }
+                            @if (ViewData["Role"] != null && ViewData["Role"].Equals("Admin"))
+                            {
+                                <a asp-action="Edit" asp-route-id="@item.ContactId" class="btn btn-primary">Reply or Edit Reply</a>
+
+                            }
+                            else
+                            {
+                                <a asp-action="Edit" asp-route-id="@item.ContactId" class="btn btn-primary">Edit</a>
+
+                                <a asp-action="Delete" asp-route-id="@item.ContactId" class="btn btn-danger">Delete</a>
+                            }
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+    else
+    {
+        <div>You have no queries</div>
+    }
+
+}
+else
+{
+    <div>You have no queries</div>
+}
