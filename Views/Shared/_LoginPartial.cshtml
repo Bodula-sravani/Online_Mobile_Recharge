@@ -6,6 +6,9 @@
 @if (SignInManager.IsSignedIn(User))
 
 {
+        <li class="nav-item">
+            <a class="nav-link text-dark" asp-area="" asp-controller="RechargeReportModels" asp-action="Index">Recharge History</a>
+        </li>
     <li class="nav-item">
         <a class="nav-link text-dark" asp-area="" asp-controller="RechargePlansModels" asp-action="Index">Recharge plans</a>
     </li>

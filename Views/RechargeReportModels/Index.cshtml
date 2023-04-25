@@ -1,0 +1,144 @@
+﻿@model IEnumerable<MobileRecharge.Controllers.RechargeReportViewModel>
+
+@if (ViewData["failed"] != null)
+{
+    <script>
+        alert('@ViewData["failed"]');
+    </script>
+}
+
+<h1 class="text-center">Recharge History</h1>
+@if(@Model == null)
+{
+    <div class="text-center">No Recharges</div>
+}else{
+@if(ViewData["Role"] != null && ViewData["Role"].ToString().Equals("Admin"))
+{
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.ReportId)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.PlanId)
+                </th>
+              @*  <th>
+                    @Html.DisplayNameFor(model => model.UserId)
+                </th>*@
+                <th>
+                    @Html.DisplayNameFor(model => model.UserName)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Phonenumber)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.DateOfRecharge)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.ValidTill)
+                </th>
+
+
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ReportId)
+                    </td>
+
+                    <td>
+                        @Html.DisplayFor(modelItem => item.PlanId)
+                    </td>
+               @*     <td>
+                        @Html.DisplayFor(modelItem => item.UserId)
+                    </td>*@
+                    <td>
+                        @Html.DisplayFor(modelItem => item.UserName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Phonenumber)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.DateOfRecharge)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ValidTill)
+                    </td>
+
+
+
+                    <td>
+
+                        <a asp-action="Delete" asp-route-id="@item.ReportId">Delete</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.ReportId)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.PlanId)
+                </th>
+                
+                <th>
+                    @Html.DisplayNameFor(model => model.Phonenumber)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.DateOfRecharge)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.ValidTill)
+                </th>
+
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ReportId)
+                    </td>
+
+                    <td>
+                        @Html.DisplayFor(modelItem => item.PlanId)
+                    </td>
+                   
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Phonenumber)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.DateOfRecharge)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ValidTill)
+                    </td>
+
+
+
+
+                    <td>
+
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+}
+

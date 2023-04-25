@@ -11,6 +11,18 @@
         <a asp-action="Create">Add a plan</a>
     </p>
 }
+<form method="post">
+    <select name="Provider">
+        <option value="All">All</option>
+
+        <option value="Airtel">Airtel</option>
+        <option value="Jio">Jio</option>
+        <option value="Idea">Idea</option>
+
+
+    </select>
+    <button type="submit">Search</button>
+</form>
 <div class="row">
     @foreach (var item in Model)
     {

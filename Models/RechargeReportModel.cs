@@ -16,8 +16,13 @@ namespace MobileRecharge.Models
 
         public IdentityUser User { get; set; }
 
+        public String PhoneNumber { get; set; }
+
         [Required]
         public DateTime DateOfRecharge { get; set; }
+
+        
+        public DateTime ValidTill { get; set; }
 
 
 

@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.DotNet.Scaffolding.Shared.Messaging;
 using Microsoft.EntityFrameworkCore;
 using MobileRecharge.Data;
 using MobileRecharge.Models;
@@ -26,6 +27,7 @@ namespace MobileRecharge.Controllers
         }
 
         // GET: RechargePlansModels
+        [Authorize]
         public async Task<IActionResult> Index()
         {
             var userId = userManager.GetUserId(this.User);
@@ -47,6 +49,37 @@ namespace MobileRecharge.Controllers
                           Problem("Entity set 'ApplicationDbContext.RechargePlans'  is null.");
         }
 
+        //filter 
+        [Authorize]
+        [HttpPost]
+        public async Task<IActionResult> Index(string provider)
+        {
+            Console.WriteLine($"Provider : {provider}");
+            var userId = userManager.GetUserId(this.User);
+
+            var user = await userManager.FindByIdAsync(userId);
+
+            var roles = await userManager.GetRolesAsync(user);
+
+            Console.WriteLine("roles: " + roles.Count);
+            foreach (var role in roles)
+            {
+                if (role.Equals("Admin"))
+                {
+                    ViewData["Role"] = role;
+                }
+            }
+            if(provider == "All")
+            {
+                return _context.RechargePlans != null ?
+                        View(await _context.RechargePlans.ToListAsync()) :
+                        Problem("Entity set 'ApplicationDbContext.RechargePlans'  is null.");
+            }
+            return _context.RechargePlans != null ?
+                        View(await _context.RechargePlans.Where(r => r.ProviderName == provider).ToListAsync()) :
+                        Problem("Entity set 'ApplicationDbContext.RechargePlans'  is null.");
+        }
+
         // GET: RechargePlansModels/Details/5
         public async Task<IActionResult> Details(int? id)
         {
@@ -63,6 +96,65 @@ namespace MobileRecharge.Controllers
             }
 
             return View(rechargePlansModel);
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+
+        public async Task<IActionResult> Details(int? id,string phonenumber)
+        {
+            Console.WriteLine(id);
+            Console.WriteLine(phonenumber);
+            var userId = userManager.GetUserId(this.User);
+
+            var user = await userManager.FindByIdAsync(userId);
+
+
+            
+
+
+
+
+            var rechargePlansModel = await _context.RechargePlans
+                .FirstOrDefaultAsync(m => m.PlanId == id);
+            if (rechargePlansModel == null)
+            {
+                return NotFound();
+            }
+            int validity = Convert.ToInt32(rechargePlansModel.Validity.Split(" ")[0]);
+
+            Console.WriteLine(DateTime.Now.AddDays(validity));
+            DateTime ValidTillDateTime = DateTime.Now.AddDays(validity);
+
+
+
+            var rechargeReportList = _context.RechargeReports
+                .Where(r => r.PhoneNumber == phonenumber)
+                .ToList();
+            var latestRecharge = rechargeReportList.OrderByDescending(x => x.ReportId).FirstOrDefault();
+            
+            if(latestRecharge == null || latestRecharge.ValidTill < DateTime.Now)
+            {
+                RechargeReportModel rechargeReportModel = new RechargeReportModel();
+                rechargeReportModel.Plan = rechargePlansModel;
+                rechargeReportModel.User = user;
+                rechargeReportModel.PhoneNumber = phonenumber;
+                rechargeReportModel.DateOfRecharge = DateTime.Now;
+                rechargeReportModel.ValidTill = DateTime.Now.AddDays(validity);
+
+                _context.Add(rechargeReportModel);
+                await _context.SaveChangesAsync();
+            }
+            else
+            {
+                
+                return RedirectToAction("Index","RechargeReportModels",new {message = $"You still have a valid Plan till {latestRecharge.ValidTill},Recharge Failed" } );
+
+
+            }
+
+
+
+            return RedirectToAction("Index","RechargeReportModels");
         }
 
         [Authorize(Roles ="Admin")]

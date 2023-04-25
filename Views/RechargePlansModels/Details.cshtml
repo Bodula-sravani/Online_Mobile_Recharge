@@ -3,6 +3,47 @@
 @{
     ViewData["Title"] = "Details";
 }
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+<script>
+    
+    function payWithRazorpay() {
+        console.log("In payment");
+        var orderId = "order_LhzdnquXDyjKrb";
+        var options = {
+            "key": "",//set the api key
+            "amount":"101",
+            "currency": "INR",
+            "name": "Acme Corp",
+            "description": "Buy Green Tea",
+            "order_id": orderId,
+            "image": "https://example.com/your_logo",
+            "handler": function(response){
+                alert(response.razorpay_payment_id);
+            },
+            "handler":function(error){
+                alert(error);
+            },
+            "prefill": {
+                "name": "Name",
+                "email": "test@example.com",
+                "contact": "+919000090000",
+            },
+            "callback_url": "https://localhost:7027/RechargeReportModels",
+            "redirect": true,
+            "notes": {
+                "address": "Hello World"
+            },
+            "theme": {
+                "color": "#3399cc"
+            }
+        }
+
+        var rzp = new Razorpay(options);
+        rzp.open();
+    }
+   
+
+</script>
 
 <h1>Details</h1>
 
@@ -49,6 +90,13 @@
     </dl>
 </div>
 <div>
-    <a asp-action="Edit" asp-route-id="@Model?.PlanId">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+    <button id="rzp-button" value="Recharge" onclick="payWithRazorpay()">Pay</button>
+
+    <form method="post">
+        <input type="text" value="" name="PhoneNumber" placeholder="Enter your mobile number!"/>
+        <input type="text" id="name" name="name" placeholder="Name" value="testname" hidden>
+        <input type="text" id="email" name="email" placeholder="Email" value="testname1234554321@gmail.com" hidden>
+        <input type="submit" value="Submit" />
+    </form>
+    <a asp-action="Index">Back to Available Plans</a>
 </div>
