@@ -46,10 +46,9 @@
 </script>
 
 <h1>Details</h1>
-
+<hr />
 <div>
-    <h4>RechargePlansModel</h4>
-    <hr />
+
     <dl class="row">
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.ProviderName)
@@ -91,12 +90,12 @@
 </div>
 <div>
     <button id="rzp-button" value="Recharge" onclick="payWithRazorpay()">Pay</button>
-
     <form method="post">
         <input type="text" value="" name="PhoneNumber" placeholder="Enter your mobile number!"/>
         <input type="text" id="name" name="name" placeholder="Name" value="testname" hidden>
         <input type="text" id="email" name="email" placeholder="Email" value="testname1234554321@gmail.com" hidden>
         <input type="submit" value="Submit" />
     </form>
-    <a asp-action="Index">Back to Available Plans</a>
+    <br/>
+    <a asp-action="Index" class="btn btn-primary">Back to Plans</a>
 </div>

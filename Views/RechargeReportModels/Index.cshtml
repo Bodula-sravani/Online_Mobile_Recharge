@@ -8,13 +8,18 @@
 }
 
 <h1 class="text-center">Recharge History</h1>
-@if(@Model == null)
+<br/>
+
+@if(Model == null || !Model.Any())
 {
-    <div class="text-center">No Recharges</div>
-}else{
+    <div class="text-center">
+        <i>.....No Recharges.....</i>
+    </div>
+}
+else
+{
 @if(ViewData["Role"] != null && ViewData["Role"].ToString().Equals("Admin"))
 {
-
     <table class="table">
         <thead>
             <tr>
@@ -70,12 +75,8 @@
                     <td>
                         @Html.DisplayFor(modelItem => item.ValidTill)
                     </td>
-
-
-
                     <td>
-
-                        <a asp-action="Delete" asp-route-id="@item.ReportId">Delete</a>
+                        <a asp-action="Delete" asp-route-id="@item.ReportId" class="btn btn-primary btn-sm">Delete</a>
                     </td>
                 </tr>
             }
@@ -128,9 +129,6 @@ else
                     <td>
                         @Html.DisplayFor(modelItem => item.ValidTill)
                     </td>
-
-
-
 
                     <td>
 

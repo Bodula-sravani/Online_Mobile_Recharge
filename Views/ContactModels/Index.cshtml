@@ -3,14 +3,15 @@
 @{
     ViewData["Title"] = "Index";
 }
-
+<h1 class="text-center">Queries</h1>
+<hr />
 
 @if(ViewData["Role"] == null)
 {
     <p>
-        <a asp-action="Create">Raise a query</a>
+        <a asp-action="Create" class="btn btn-primary">Raise a query</a>
     </p>
-}
+} 
 @if (Model.Any())
 {
     @if (Model.Any())
@@ -31,7 +32,7 @@
                             {
                                 if (!(ViewData["Role"] != null && ViewData["Role"].Equals("Admin")))
                                 {
-                                    <p class="card-text">...Waiting for reply...</p>
+                                    <p class="card-text"><i>...Waiting for reply...</i></p>
                                 }
                                 
                             }
@@ -54,11 +55,15 @@
     }
     else
     {
-        <div>You have no queries</div>
+        <div class="text-center">
+            <i>.....No Queries.....</i>
+        </div>
     }
 
 }
 else
 {
-    <div>You have no queries</div>
+    <div class="text-center">
+        <i>.....No Queries.....</i>
+    </div>
 }

@@ -3,12 +3,15 @@
 @{
     ViewData["Title"] = "Index";
 }
+<h1 class="text-center">Recharge Plans</h1>
+<br/>
+
 
 
 @if (ViewData["Role"] != null && ViewData["Role"].Equals("Admin"))
 {
     <p>
-        <a asp-action="Create">Add a plan</a>
+        <a asp-action="Create" class="btn btn-primary">Add a plan</a>
     </p>
 }
 <form method="post">
@@ -23,6 +26,16 @@
     </select>
     <button type="submit">Search</button>
 </form>
+<br/>
+
+@if (Model == null || !Model.Any())
+{
+    <div class="text-center">
+        <i>.....No Plans.....</i>
+    </div>
+}
+else
+{
 <div class="row">
     @foreach (var item in Model)
     {
@@ -56,8 +69,7 @@
         </div>
     }
 </div>
-
-
+}
 @*@if (ViewData["Role"] != null && ViewData["Role"].Equals("Admin"))
 {
     <p>

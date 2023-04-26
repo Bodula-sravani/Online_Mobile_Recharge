@@ -20,12 +20,7 @@ namespace MobileRecharge.Models
 
         [Required]
         public DateTime DateOfRecharge { get; set; }
-
-        
+       
         public DateTime ValidTill { get; set; }
-
-
-
-
     }
 }
